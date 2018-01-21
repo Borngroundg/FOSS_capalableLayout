@@ -122,30 +122,30 @@ import android.widget.TextView;
          * 레이아웃 크기 설정
          */
         @Override
-        protected void onMeasure(int pWidthMeasureSpec, int pHeightMeasureSpec) {
+        protected void onMeasure(int pWidthMeasureSpec, int pHeightMeasureSpec) { // 가로 세로 높이 측정
 
-            float lRoot_Width_Max = 0;
-            int lRoot_MeasureSpec_WidthMode = MeasureSpec.getMode(pWidthMeasureSpec);
+            float lRoot_Width_Max = 0; // 초기화
+            int lRoot_MeasureSpec_WidthMode = MeasureSpec.getMode(pWidthMeasureSpec); //MeasureSpec 클래스 크기 설정
 
 
-            float lRoot_Height_Max = 0;
-            int lRoot_MeasureSpec_HeightMode = MeasureSpec.getMode(pHeightMeasureSpec);
+            float lRoot_Height_Max = 0; // 초기화
+            int lRoot_MeasureSpec_HeightMode = MeasureSpec.getMode(pHeightMeasureSpec); //MeasureSpec 클래스 크기 설정
 
 
             {
-                int lRoot_MeasureSpec_Width = MeasureSpec.getSize(pWidthMeasureSpec);
-                int lRoot_MeasureSpec_Height = MeasureSpec.getSize(pHeightMeasureSpec);
+                int lRoot_MeasureSpec_Width = MeasureSpec.getSize(pWidthMeasureSpec); //MeasureSpec 클래스 크기 설정한값을 부여
+                int lRoot_MeasureSpec_Height = MeasureSpec.getSize(pHeightMeasureSpec);//MeasureSpec 클래스 크기 설정한 값을 부여
                 switch (lRoot_MeasureSpec_WidthMode) {
-                    case MeasureSpec.EXACTLY: {
+                    case MeasureSpec.EXACTLY: { //부모레이아웃 크기 설정후  capable 레이아웃에 경계를 부여
 
                         lRoot_Width_Max = lRoot_MeasureSpec_Width;
 
                     }
                     break;
-                    case MeasureSpec.AT_MOST: {
+                    case MeasureSpec.AT_MOST: { // caplable 레이아웃 크기 설정
                         if (lRoot_MeasureSpec_HeightMode == MeasureSpec.EXACTLY) {
 
-                            lRoot_Width_Max = Float.MAX_VALUE;
+                            lRoot_Width_Max = Float.MAX_VALUE; // 가로 최대값 설정
                         } else {
                             lRoot_Width_Max = lRoot_MeasureSpec_Width;
                         }
@@ -154,13 +154,13 @@ import android.widget.TextView;
                     break;
                     default: {
 
-                        lRoot_Width_Max = Float.MAX_VALUE;
+                        lRoot_Width_Max = Float.MAX_VALUE; // 최대값 설정
 
                     }
                 }
 
                 switch (lRoot_MeasureSpec_HeightMode) {
-                    case MeasureSpec.EXACTLY: {
+                    case MeasureSpec.EXACTLY: { // 세로값 설정 같이
                         lRoot_Height_Max = lRoot_MeasureSpec_Height;
                     }
                     break;
@@ -284,7 +284,116 @@ import android.widget.TextView;
                     break;
                 }
             }
+
+
 // -----------------------------------------------------------------------------
+        }
+        float lScale_Ratio_Post = Math.min(lRoot_Width_Max / mScale_Root_Width, lRoot_Height_Max / mScale_Root_Height);
+
+        {
+            lRoot_Width 	= mScale_Root_Width * lScale_Ratio_Post;
+            lRoot_Height 	= mScale_Root_Height * lScale_Ratio_Post;
+        }
+
+        {
+
+
+
+            for (int i=0;i<getChildCount();i++) {
+                View lView = getChildAt(i);
+
+                CapableLayout.LayoutParams lParams = getChildLayoutParams(lView);
+
+                boolean dif = false;
+
+                int lParams_Left = Math.round(lScale_Ratio_Post * lParams.getScale_Left()); // 최종적으로 배치 위치를 세팅하기 위해 각 자식
+                // 뷰들의 layoutparams를 업데이트함
+                if(lParams.leftMargin != lParams_Left)
+                    dif = true;
+                lParams.leftMargin = lParams_Left;
+
+                int lParams_Width = Math.round(lScale_Ratio_Post * lParams.getScale_Width()); // 가로 비율 설정
+                if(lParams.width != lParams_Width)
+                    dif = true;
+                lParams.width = lParams_Width;
+                switch (lParams.mScale_Left_BasePosition) {
+                    case 0: { // 왼쪽
+                    } break;
+                    case 1: { // 중앙
+                        lParams.leftMargin -= lParams.width / 2;
+                    } break;
+                    case 2: { // 오른쪽
+                        lParams.leftMargin -= lParams.width;
+                    } break;
+                }
+
+
+
+                int lParams_Top = Math.round(lScale_Ratio_Post * lParams.getScale_Top()); //
+                if(lParams.topMargin != lParams_Top)
+                    dif = true;
+                lParams.topMargin = lParams_Top;
+
+                int lParams_Height = Math.round(lScale_Ratio_Post * lParams.getScale_Height());
+
+                if(lParams.height != lParams_Height)
+                    dif = true;
+
+                lParams.height = lParams_Height;
+                switch (lParams.mScale_Top_BasePosition) {
+                    case 0: { // left
+                    } break;
+                    case 1: { // center
+                        lParams.topMargin -= lParams.height / 2;
+                    } break;
+                    case 2: { // right
+                        lParams.topMargin -= lParams.height;
+                    } break;
+                }
+
+                if(lParams.mScale_TextSize != -1) {
+                    if(lView instanceof TextView) {
+                        TextView v = (TextView) lView;
+                        if(isDifferentSufficiently(lParams.mScale_TextSize * lScale_Ratio_Post, v.getTextSize())) {
+                            v.setTextSize(TypedValue.COMPLEX_UNIT_PX, lParams.mScale_TextSize * lScale_Ratio_Post);
+                        }
+                    }
+                }
+
+                if(dif) {
+                    lView.setLayoutParams(lParams);
+                }
+            }
+        }
+            if(isDifferentSufficiently(lScale_Ratio_Post, lScale_Ratio_Pre, 1.01f) == false) {
+            break;
+        }
+    }
+
+
+        super.onMeasure(MeasureSpec.makeMeasureSpec(Math.round(lRoot_Width), lRoot_MeasureSpec_WidthMode), MeasureSpec.makeMeasureSpec(Math.round(lRoot_Height), lRoot_MeasureSpec_HeightMode));
+                setMeasuredDimension(Math.round(lRoot_Width), Math.round(lRoot_Height));
+                }
+
+
+private boolean isDifferentSufficiently(float pNew, float pOld) {
+        return isDifferentSufficiently(pNew, pOld, 1.1f);
+        }
+private boolean isDifferentSufficiently(float pNew, float pOld, float pDiffDelta) {
+        if( pNew < pOld / pDiffDelta || pOld * pDiffDelta < pNew ) {
+        return true;
+        }
+        return false;
+        }
+
+private enum ViewPosition {
+    Top,
+    Bottom,
+    Left,
+    Right,
+    Surrounded,
+    Nothing
+        private boolean isDifferentSufficiently(float lScale_ratio_post, float lScale_ratio_pre, float v) {
         }
     }
 
