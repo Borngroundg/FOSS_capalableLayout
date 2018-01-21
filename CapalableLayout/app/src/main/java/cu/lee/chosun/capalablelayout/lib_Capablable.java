@@ -145,7 +145,31 @@ import android.widget.TextView;
                     default: {
 
                         lRoot_Width_Max = Float.MAX_VALUE; // 최대값 설정
+                        public String toString() {
+                            return String.format("%08x (%6.3f, %6.3f) (%6.3f, %6.3f)", hashCode(), getScale_Left(), getScale_Top(), getScale_Right(), getScale_Bottom());
+                        }
+                        private float mScale_Left = Default_Scale_Left;
+                        public float getScale_Left() { return mScale_Left; }
+                        public void setScale_Left(float pScale_Left) { mScale_Left = pScale_Left; }
+                        public float getScale_Right() { return getScale_Left()+getScale_Width(); }
+                        private int mScale_Left_BasePosition;
+                        public int getScale_Left_BasePosition() { return mScale_Left_BasePosition; }
+                        public void setScale_Left_BasePosition(int pScale_Left_BasePosition) { mScale_Left_BasePosition = pScale_Left_BasePosition; }
 
+                        private float mScale_Top = Default_Scale_Top;
+                        public float getScale_Top() { return mScale_Top; }
+                        public void setScale_Top(float pScale_Top) { mScale_Top = pScale_Top; }
+                        public float getScale_Bottom() { return getScale_Top()+getScale_Height(); }
+                        private int mScale_Top_BasePosition;
+                        public int getScale_Top_BasePosition() { return mScale_Top_BasePosition; }
+                        public void setScale_Top_BasePosition(int pScale_Top_BasePosition) { mScale_Top_BasePosition = pScale_Top_BasePosition; }
+
+                        private float mScale_Width = Default_Scale_Width;
+                        public float getScale_Width() { return mScale_Width; }
+                        public void setScale_Width(float pScale_Width) { mScale_Width = pScale_Width; }
+                        private float mScale_Height = Default_Scale_Height;
+                        public float getScale_Height() { return mScale_Height; }
+                        public void setScale_Height(float pScale_Height) { mScale_Height = pScale_Height; }
                     }
                 }
             }
