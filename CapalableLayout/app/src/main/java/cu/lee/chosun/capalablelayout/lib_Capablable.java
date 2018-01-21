@@ -211,6 +211,43 @@ import android.widget.TextView;
                         new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), pResID, options)),
                         pScale_Left, pScale_Top, pScale_Width, pScale_Height, pDuplicateState);
             }
+            switch (lTextView_WrapContent_Direction) {
+                case Top: {
+                    if(lTV_SLLP.mTextView_WrapContent_ResizeSurrounded) {
+                        moveChildView(pTV_Text, lTV_SLLP.getScale_Left(), lTV_SLLP.getScale_Top(), lTV_SLLP.getScale_Width(), lTextView_ScaleHeight_New);
+                    } else {
+                        moveChildView(pTV_Text, lTV_SLLP.getScale_Left(), lTV_SLLP.getScale_Top() - lTextView_ScaleHeight_Diff, lTV_SLLP.getScale_Width(), lTextView_ScaleHeight_New);
+                    }
+                } break;
+                case Bottom: {
+                    moveChildView(pTV_Text, lTV_SLLP.getScale_Left(), lTV_SLLP.getScale_Top(), lTV_SLLP.getScale_Width(), lTextView_ScaleHeight_New);
+                } break;
+                case Center_Vertical: {
+                    if(lTV_SLLP.mTextView_WrapContent_ResizeSurrounded) {
+                        moveChildView(pTV_Text, lTV_SLLP.getScale_Left(), lTV_SLLP.getScale_Top(), lTV_SLLP.getScale_Width(), lTextView_ScaleHeight_New);
+                    } else {
+                        moveChildView(pTV_Text, lTV_SLLP.getScale_Left(), lTV_SLLP.getScale_Top() - lTextView_ScaleHeight_Diff / 2, lTV_SLLP.getScale_Width(), lTextView_ScaleHeight_New);
+                    }
+                } break;
+                case Left: {
+                    if(lTV_SLLP.mTextView_WrapContent_ResizeSurrounded) {
+                        moveChildView(pTV_Text, lTV_SLLP.getScale_Left(), lTV_SLLP.getScale_Top(), lTextView_ScaleWidth_New, lTV_SLLP.getScale_Height());
+                    } else {
+                        moveChildView(pTV_Text, lTV_SLLP.getScale_Left() - lTextView_ScaleWidth_Diff, lTV_SLLP.getScale_Top(), lTextView_ScaleWidth_New, lTV_SLLP.getScale_Height());
+                    }
+                } break;
+                case Right: {
+                    moveChildView(pTV_Text, lTV_SLLP.getScale_Left(), lTV_SLLP.getScale_Top(), lTextView_ScaleWidth_New, lTV_SLLP.getScale_Height());
+                } break;
+                case Center_Horizontal: {
+                    if(lTV_SLLP.mTextView_WrapContent_ResizeSurrounded) {
+                        moveChildView(pTV_Text, lTV_SLLP.getScale_Left(), lTV_SLLP.getScale_Top(), lTextView_ScaleWidth_New, lTV_SLLP.getScale_Height());
+                    } else {
+                        moveChildView(pTV_Text, lTV_SLLP.getScale_Left() - lTextView_ScaleWidth_Diff / 2, lTV_SLLP.getScale_Top(), lTextView_ScaleWidth_New, lTV_SLLP.getScale_Height());
+                    }
+                } break;
+                default:
+                    break;
                 /**
                  * adds new ImageView with (Drawable, Left, Top, Width, Height) parameters
                  * sets Image of ImageView with Drawable parameter
