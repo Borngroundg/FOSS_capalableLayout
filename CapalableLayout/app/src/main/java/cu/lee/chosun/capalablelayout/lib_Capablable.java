@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -244,6 +245,17 @@ import android.widget.TextView;
                 addView(lNewImageView, pScale_Left, pScale_Top, pScale_Width, pScale_Height);
                 return lNewImageView;
             }
-
+                @Override
+                public String toString() {
+                return String.format("{ScalableLayout:%08x}", this.hashCode());
+            }
+                void log(String pLog) {
+                if(sLogTag_Global != null) {
+                    Log.e(sLogTag_Global, this+"] "+pLog);
+                }
+                if(mLogTag_This != null) {
+                    Log.e(mLogTag_This, this+"] "+pLog);
+                }
+            }
             }
         }
