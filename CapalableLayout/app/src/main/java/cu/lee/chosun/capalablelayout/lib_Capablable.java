@@ -1,12 +1,14 @@
 package cu.lee.chosun.capalablelayout;
 
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
     /**
@@ -172,5 +174,76 @@ import android.widget.TextView;
                         public void setScale_Height(float pScale_Height) { mScale_Height = pScale_Height; }
                     }
                 }
+                public ImageView addNewImageView(Bitmap pBitmap, float pScale_Left, float pScale_Top, float pScale_Width, float pScale_Height) {
+                BitmapDrawable bm = new BitmapDrawable(getResources(), pBitmap);
+                return addNewImageView(bm, pScale_Left, pScale_Top, pScale_Width, pScale_Height, false);
+            }
+                /**
+                 * adds new ImageView with (ResourceID, Left, Top, Width, Height) parameters
+                 * sets Image of ImageView with ResourceID parameter
+                 * DuplicateState is false by default.
+                 * @param pResID
+                 * @param pScale_Left
+                 * @param pScale_Top
+                 * @param pScale_Width
+                 * @param pScale_Height
+                 * @return created ImageView instance
+                 */
+                public ImageView addNewImageView(int pResID, float pScale_Left, float pScale_Top, float pScale_Width, float pScale_Height) {
+                return addNewImageView(pResID, pScale_Left, pScale_Top, pScale_Width, pScale_Height, false);
+            }
+                /**
+                 * adds new ImageView with (ResourceID, Left, Top, Width, Height, DuplicateState) parameters
+                 * sets Image of ImageView with ResourceID parameter
+                 * @param pResID
+                 * @param pScale_Left
+                 * @param pScale_Top
+                 * @param pScale_Width
+                 * @param pScale_Height
+                 * @param pDuplicateState
+                 * @return created ImageView instance
+                 */
+                public ImageView addNewImageView(int pResID, float pScale_Left, float pScale_Top, float pScale_Width, float pScale_Height, boolean pDuplicateState) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                return addNewImageView(
+                        new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), pResID, options)),
+                        pScale_Left, pScale_Top, pScale_Width, pScale_Height, pDuplicateState);
+            }
+                /**
+                 * adds new ImageView with (Drawable, Left, Top, Width, Height) parameters
+                 * sets Image of ImageView with Drawable parameter
+                 * DuplicateState is false by default.
+                 * @param drawable
+                 * @param pScale_Left
+                 * @param pScale_Top
+                 * @param pScale_Width
+                 * @param pScale_Height
+                 * @return created ImageView instance
+                 */
+                public ImageView addNewImageView(Drawable drawable, float pScale_Left, float pScale_Top, float pScale_Width, float pScale_Height) {
+                return addNewImageView(drawable, pScale_Left, pScale_Top, pScale_Width, pScale_Height, false);
+            }
+                /**
+                 * adds new ImageView with (Drawable, Left, Top, Width, Height, DuplicateState) parameters
+                 * sets Image of ImageView with Drawable parameter
+                 * @param drawable
+                 * @param pScale_Left
+                 * @param pScale_Top
+                 * @param pScale_Width
+                 * @param pScale_Height
+                 * @param pDuplicateState
+                 * @return
+                 */
+                public ImageView addNewImageView(Drawable drawable, float pScale_Left, float pScale_Top, float pScale_Width, float pScale_Height, boolean pDuplicateState) {
+                ImageView lNewImageView = new ImageView(getContext());
+                lNewImageView.setImageDrawable(drawable);
+                lNewImageView.setScaleType(ScaleType.FIT_XY);
+                lNewImageView.setDuplicateParentStateEnabled(pDuplicateState);
+
+                addView(lNewImageView, pScale_Left, pScale_Top, pScale_Width, pScale_Height);
+                return lNewImageView;
+            }
+
             }
         }
