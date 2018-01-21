@@ -225,6 +225,13 @@ import android.widget.TextView;
                 public ImageView addNewImageView(Drawable drawable, float pScale_Left, float pScale_Top, float pScale_Width, float pScale_Height) {
                 return addNewImageView(drawable, pScale_Left, pScale_Top, pScale_Width, pScale_Height, false);
             }
+
+                float lScale_Left = attrs_view.getFloat(com.ssomai.android.scalablelayout.R.styleable.View2_scale_left, Default_Scale_Left);
+                int lLeft_BasePosition = attrs_view.getInteger(com.ssomai.android.scalablelayout.R.styleable.View2_scale_left_baseposition, Default_Scale_Left_BasePosition);
+                float lScale_Top = attrs_view.getFloat(com.ssomai.android.scalablelayout.R.styleable.View2_scale_top, Default_Scale_Top);
+                int lTop_BasePosition = attrs_view.getInteger(com.ssomai.android.scalablelayout.R.styleable.View2_scale_top_baseposition, Default_Scale_Top_BasePosition);
+
+
                 /**
                  * adds new ImageView with (Drawable, Left, Top, Width, Height, DuplicateState) parameters
                  * sets Image of ImageView with Drawable parameter
